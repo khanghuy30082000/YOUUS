@@ -1,0 +1,99 @@
+import { View, Text, SafeAreaView, FlatList, Image } from 'react-native'
+import React, { useLayoutEffect, useState, useEffect } from 'react'
+import { useHistory } from 'react-router-native';
+import { StyleSheet } from 'react-native';
+import { AntDesign, Feather, Ionicons, Entypo, FontAwesome, SimpleLineIcons, MaterialIcons } from "@expo/vector-icons"
+import { ScrollView } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/database';
+import 'firebase/compat/storage';
+import 'firebase/firestore'
+import { useFirestoreCollection, useFirestoreDocument } from '../../../hooks';
+import { TouchableOpacity } from 'react-native';
+import { auth, db } from '../../../../App';
+
+const trang = "white";
+const Xanh = "#0176E4";
+const Do = 'red';
+const Vang = 'yellow';
+const XanhLa = 'green';
+const Xam = '#BFBFBF';
+
+const LinkChatOne = (props) => {
+
+    const [img, setImg] = useState(null)
+    const chatID = props.location.state.chatID
+    console.log('id link', chatID)
+    const history = useHistory();
+
+    const fileAnh = () => {
+        history.push('/AnhChatOne', {chatID : chatID})
+      }
+    const gotoBack = () => {
+        history.goBack();
+    };
+    return (
+        <SafeAreaView style={{ backgroundColor: trang, flex: 1 }}>
+            <View style={styles.viewHeader}>
+                <Feather
+                    onPress={gotoBack}
+                    name='chevron-left'
+                    size={25}
+                    color='black'
+                    style={{ marginStart: 5, flex: 0.5 }}
+                />
+                <Text style={styles.textHeader}>Ảnh, file & link</Text>
+            </View>
+            <View style={styles.viewTab}>
+                <TouchableOpacity style={{ height: "100%", width: 130, justifyContent: 'center', alignItems: 'center' }} onPress={fileAnh}>
+                    <Text style={styles.tab}>Ảnh</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{ height: "100%", width: 130, justifyContent: 'center', alignItems: 'center' }}>
+                    <Text style={styles.tab}>File</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{ height: "100%", width: 130, justifyContent: 'center', alignItems: 'center', borderBottomWidth: 1, borderColor: Xanh }}>
+                    <Text style={styles.txtTab}>Link</Text>
+                </TouchableOpacity>
+            </View>
+        </SafeAreaView>
+    )
+}
+
+export default LinkChatOne
+
+const styles = StyleSheet.create({
+    viewHeader: {
+        backgroundColor: trang,
+        height: 44,
+        width: "100%",
+        borderBottomRightRadius: 20,
+        borderBottomLeftRadius: 20,
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    textHeader: {
+        color: '#0176E4',
+        fontWeight: 'bold',
+        fontSize: 18,
+        textAlign: 'center',
+    },
+    txtTab: {
+        fontWeight: 'bold',
+        fontSize: 16,
+        color: Xanh
+    },
+    tab: {
+        fontWeight: 'bold',
+        fontSize: 16,
+        color: Xam
+    },
+    viewTab: {
+        height: 50,
+        width: "100%",
+        flexDirection: 'row',
+        alignSelf: 'center',
+        justifyContent: 'space-between',
+    }
+})
